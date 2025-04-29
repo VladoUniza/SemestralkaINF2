@@ -42,6 +42,6 @@ public class Thunder implements Cards {
 
     @Override
     public int cost() {
-        return 1;
+        return 10;
     }
 }

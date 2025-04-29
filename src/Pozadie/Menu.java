@@ -22,6 +22,9 @@ public class Menu {
     private final Obrazok rimHlava;
     private final Obrazok lukostrelecHlava;
     private final Obrazok kopijnikHlava;
+    private final Obrazok healing;
+    private final Obrazok lightning;
+    private final Obrazok shield;
     private final Manazer manazer;
     private final Elixir elixir;
     private final ArrayList<Cards> karty = new ArrayList<>();
@@ -39,6 +42,13 @@ public class Menu {
         this.lukostrelecHlava.zmenPolohu(200, 50);
         this.kopijnikHlava = new Obrazok("pics/IkonaHlavy/Kopijnik.png");
         this.kopijnikHlava.zmenPolohu(350, 50);
+
+        this.lightning = new Obrazok("pics/Magic/Lightning.png");
+        this.lightning.zmenPolohu(1400, 50);
+        this.healing = new Obrazok("pics/Magic/Healing.png");
+        this.healing.zmenPolohu(1550, 50);
+        this.shield = new Obrazok("pics/Magic/Shield.png");
+        this.shield.zmenPolohu(1700, 50);
 
         Obdlznik obdlznik = new Obdlznik();
         obdlznik.zmenStrany(2000, 200);
@@ -96,6 +106,10 @@ public class Menu {
             this.suradnice.add(new int[]{x + 900, this.polohaY});
             x += 150;
         }
+
+        this.lightning.zobraz();
+        this.shield.zobraz();
+        this.healing.zobraz();
     }
 
     public void pohybMysi(int x, int y) {
