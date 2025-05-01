@@ -1,6 +1,5 @@
 package Main;
 
-import Magic.Thunder;
 import Postavy.Player;
 import Postavy.Enemies.Enemy;
 import Postavy.Figure;
@@ -12,8 +11,11 @@ import fri.shapesge.Manazer;
 public class Starter {
 
     public Starter() {
+    }
+
+    public void spusti() {
         Manazer manazer = new Manazer();
-        Background background = new Background();
+        new Background();
         Elixir elixir = new Elixir();
 
         Menu menu = new Menu(elixir);
@@ -23,8 +25,6 @@ public class Starter {
         Player budovaHrac = new Player();
         Enemy budovaNepriatel = new Enemy();
         Figure.initializeBuildings(budovaHrac, budovaNepriatel);
-
-        Thunder thumder = new Thunder(elixir);
 
         manazer.spravujObjekt(menu);
         manazer.spravujObjekt(elixir);
