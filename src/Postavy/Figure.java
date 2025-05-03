@@ -23,6 +23,7 @@ public class Figure extends Character {
     private final int rychlost;
     private final boolean isEnemy;
     private boolean isDead;
+    private boolean isAbilityActivated;
 
     private static Player player;
     private static Enemy nepriatelskyHrac;
@@ -38,6 +39,7 @@ public class Figure extends Character {
         this.polohaX = polohaX;
         this.polohaY = polohaY;
         this.isEnemy = isEnemy;
+        this.isAbilityActivated = false;
         this.obrazok = new Obrazok("pics/" + this.nazov + "/" + this.nazov + "/0.png");
 
         DataObrazku data = new DataObrazku("pics/" + this.nazov + "/" + this.nazov + "/0.png");
@@ -176,6 +178,11 @@ public class Figure extends Character {
             this.isDead = true;
             vsetkyPostavy.remove(this);
         }
+
+        if (this.hpBar.getHp() <= this.maxHP / 2 && !this.isAbilityActivated) {
+            this.ability();
+            this.isAbilityActivated = true;
+        }
     }
 
     public HpBar getHpBar() {
@@ -215,6 +222,11 @@ public class Figure extends Character {
 
     @Override
     public int getDamage() {
+        throw new UnsupportedOperationException("Current character is not defined");
+    }
+
+    @Override
+    public void ability() {
         throw new UnsupportedOperationException("Current character is not defined");
     }
 }

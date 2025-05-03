@@ -30,6 +30,11 @@ public class Player extends Character {
         return 0;
     }
 
+    @Override
+    public void ability() {
+        return;
+    }
+
     public int getX() {
         return 200;
     }

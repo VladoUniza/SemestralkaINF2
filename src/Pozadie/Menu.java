@@ -3,9 +3,9 @@ package Pozadie;
 import Magic.Healing;
 import Magic.Shield;
 import Magic.Thunder;
-import Postavy.RomanSoldier;
+import Postavy.Soldier;
 import Postavy.Archer;
-import Postavy.Kopijnik;
+import Postavy.SpearMan;
 import fri.shapesge.Manazer;
 import fri.shapesge.Obdlznik;
 import fri.shapesge.Obrazok;
@@ -63,20 +63,20 @@ public class Menu {
     }
 
     public void kartyPostav() {
-        RomanSoldier vojak = new RomanSoldier(0, 0, 0, this.elixir, this.manazer, 50);
+        Soldier vojak = new Soldier(0, 0, 0, this.elixir, this.manazer, 50);
         Archer luk = new Archer(0, 0, 0, this.elixir, this.manazer, 25);
-        Kopijnik kopijnik = new Kopijnik(0, 0, 0, this.elixir, this.manazer, 100);
+        SpearMan spearMan = new SpearMan(0, 0, 0, this.elixir, this.manazer, 100);
         Thunder thunder = new Thunder(this.elixir);
         Healing healing  = new Healing(this.elixir);
         Shield shield = new Shield(this.elixir);
 
         vojak.hide();
         luk.hide();
-        kopijnik.hide();
+        spearMan.hide();
 
         this.karty.add(vojak);
         this.karty.add(luk);
-        this.karty.add(kopijnik);
+        this.karty.add(spearMan);
         this.karty.add(thunder);
         this.karty.add(healing);
         this.karty.add(shield);

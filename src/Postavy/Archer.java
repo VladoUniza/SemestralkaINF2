@@ -14,7 +14,7 @@ public class Archer extends Figure implements Cards {
         this.manazer = manazer;
     }
 
-    public Archer(int pocetObrazkov, int pocetStacObrazkov, String nazov, int polohaX, int polohaY, int rychlost, boolean jeNepriatel, int maxHP) {
+    public Archer(int polohaX, int polohaY, int rychlost, boolean jeNepriatel, int maxHP) {
         super(7, 12, "NEPluk", polohaX, polohaY, rychlost, jeNepriatel, maxHP);
     }
     public void click() {
@@ -45,4 +45,16 @@ public class Archer extends Figure implements Cards {
     public int getDamage() {
         return 2;
     }
+
+    public void ability() {
+        for (Figure figure : getVsetkyPostavy()) {
+            if ((figure.getHp() == figure.getMaxHP() / 2)) {
+                if (figure instanceof Archer) {
+                    figure.getHpBar().setShield(25);
+                }
+            }
+        }
+    }
 }
+
+
