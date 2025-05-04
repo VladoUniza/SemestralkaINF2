@@ -7,11 +7,11 @@ public class Player extends Character {
 
     public Player() {
         this.hpBar = new HpBar(10, 700, this);
-        this.hpBar.zobraz();
+        this.hpBar.show();
     }
 
     public void takeHP(int amount) {
-        this.hpBar.uberHp(amount);
+        this.hpBar.substractHp(amount);
         this.health -= amount;
     }
 
@@ -32,7 +32,6 @@ public class Player extends Character {
 
     @Override
     public void ability() {
-        return;
     }
 
     public int getX() {

@@ -9,26 +9,24 @@ public class Soldier extends Figure implements Cards {
     private Manazer manazer;
     private boolean damageDoubled;
 
-    public Soldier(int polohaX, int polohaY, int rychlost,Elixir elixir, Manazer manazer, int maxHP) {
-        super(7, 3, "mec", polohaX, polohaY, rychlost, false, maxHP);
+    public Soldier(int polohaX, int polohaY, int rychlost, Elixir elixir, Manazer manazer, int maxHP) {
+        super(7, 3, "sword", polohaX, polohaY, rychlost, false, maxHP, 50, 1, 70);
         this.elixir = elixir;
         this.manazer = manazer;
         this.damageDoubled = false;
     }
 
     public Soldier(int polohaX, int polohaY, int rychlost, boolean jeNepriatel, int maxHP) {
-        super(7, 3, "NEPmec", polohaX, polohaY, rychlost, jeNepriatel, maxHP);
+        super(7, 3, "Esword", polohaX, polohaY, rychlost, jeNepriatel, maxHP, 50, 2, 70);
         this.damageDoubled = false;
     }
 
     @Override
     public void click() {
-        if (this.elixir.getpocet() > this.cost()) {
-            Soldier vojak = new Soldier(200, 900, 8,this.elixir, this.manazer, 50);
-            this.elixir.odpocitajElixir(vojak.cost() + 1);
+        if (this.elixir.getcount() >= this.cost()) {
+            Soldier vojak = new Soldier(200, 900, 8, this.elixir, this.manazer, 50);
+            this.elixir.substractElixir(vojak.cost() + 1);
             this.manazer.spravujObjekt(vojak);
-        } else {
-            this.elixir.odpocitajElixir(0);
         }
     }
 
@@ -38,28 +36,20 @@ public class Soldier extends Figure implements Cards {
     }
 
     @Override
-    public int getRange() {
-        return 70;
-    }
-
-    @Override
-    public int getHealth() {
-        return 50;
-    }
-
-    @Override
     public int getDamage() {
         if (damageDoubled) {
-            return 2;
+            return 2 * super.getDamage();
         }
-        return 1;
+        return super.getDamage();
     }
 
+    @Override
     public void ability() {
-        for (Figure figure : getVsetkyPostavy()) {
-            if (figure.getHp() == figure.getMaxHP() / 2) {
-                if (figure instanceof Soldier) {
+        if (!damageDoubled) {
+            for (Figure figure : getVsetkyPostavy()) {
+                if (!figure.getIsEnemy() && figure instanceof Soldier && figure.getHp() <= figure.getMaxHP() / 2) {
                     damageDoubled = true;
+                    break;
                 }
             }
         }

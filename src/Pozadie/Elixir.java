@@ -27,11 +27,11 @@ public class Elixir {
         }
     }
 
-    public void odpocitajElixir(int odpocet) {
+    public void substractElixir(int odpocet) {
         this.pocet -= odpocet;
     }
 
-    public int getpocet() {
+    public int getcount() {
         return this.pocet;
     }
 }

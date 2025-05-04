@@ -13,16 +13,16 @@ public class Healing implements Cards {
 
     @Override
     public void click() {
-        if (this.elixir.getpocet() > this.cost()) {
-            this.elixir.odpocitajElixir(this.cost() + 1);
+        if (this.elixir.getcount() > this.cost()) {
+            this.elixir.substractElixir(this.cost() + 1);
 
             for (Figure figure : Figure.getVsetkyPostavy()) {
-                if (!figure.getIsEnemy() && figure.getHp() < figure.getMaxHP()) {
+                if (figure.getIsEnemy() && figure.getHp() < figure.getMaxHP()) {
                     figure.setHP(figure.getMaxHP());
                 }
             }
         } else {
-            this.elixir.odpocitajElixir(0);
+            this.elixir.substractElixir(0);
         }
     }
 

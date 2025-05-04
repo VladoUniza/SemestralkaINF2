@@ -13,16 +13,16 @@ public class Shield implements Cards {
 
     @Override
     public void click() {
-        if (this.elixir.getpocet() > this.cost()) {
-            this.elixir.odpocitajElixir(this.cost() + 1);
+        if (this.elixir.getcount() > this.cost()) {
+            this.elixir.substractElixir(this.cost() + 1);
 
             for (Figure figure : Figure.getVsetkyPostavy()) {
-                if (!figure.getIsEnemy()) {
+                if (figure.getIsEnemy()) {
                     figure.getHpBar().setShield(figure.getMaxHP()/2);
                 }
             }
         } else {
-            this.elixir.odpocitajElixir(0);
+            this.elixir.substractElixir(0);
         }
     }
 

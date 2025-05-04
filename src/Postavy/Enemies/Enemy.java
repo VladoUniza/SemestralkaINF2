@@ -1,8 +1,6 @@
 package Postavy.Enemies;
-import Postavy.Archer;
+import Postavy.*;
 import Postavy.Character;
-import Postavy.HpBar;
-import Postavy.Soldier;
 import fri.shapesge.Manazer;
 import java.util.Random;
 
@@ -20,8 +18,8 @@ public class Enemy extends Character {
         this.x = 1620;
         this.y = 900;
         this.hpBar = new HpBar(1400, 700, this);
-        this.hpBar.zmenFarbu("red");
-        this.hpBar.zobraz();
+        this.hpBar.changeColor("red");
+        this.hpBar.show();
         this.rand = new Random();
     }
 
@@ -36,18 +34,18 @@ public class Enemy extends Character {
             this.manazer.spravujObjekt(archer);
             this.x -= 8;
         } else {
-            var archer = new Archer(this.x, this.y, 8, true, this.getHealth());
-            this.manazer.spravujObjekt(archer);
+            var spearman = new SpearMan(this.x, this.y, 8, true, this.getHealth());
+            this.manazer.spravujObjekt(spearman);
             this.x -= 8;
         }
     }
 
-    public void skryHP() {
-        this.hpBar.skry();
+    public void hideHP() {
+        this.hpBar.hide();
     }
 
     public void takeHP(int amount) {
-        this.hpBar.uberHp(amount);
+        this.hpBar.substractHp(amount);
         this.zivoty -= amount;
     }
 

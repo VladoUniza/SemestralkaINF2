@@ -13,15 +13,15 @@ import java.util.ArrayList;
 
 public class Menu {
 
-    private final int velkostx;
-    private final int velkosty;
-    private final int polohaX;
-    private final int polohaY;
-    private final ArrayList<Obdlznik> ikony;
-    private final ArrayList<int[]> suradnice;
-    private final Obrazok rimHlava;
-    private final Obrazok lukostrelecHlava;
-    private final Obrazok kopijnikHlava;
+    private final int width;
+    private final int height;
+    private final int x;
+    private final int y;
+    private final ArrayList<Obdlznik> icons;
+    private final ArrayList<int[]> coordinations;
+    private final Obrazok soldierIcon;
+    private final Obrazok archerIcon;
+    private final Obrazok spearmanIcon;
     private final Obrazok healing;
     private final Obrazok lightning;
     private final Obrazok shield;
@@ -30,18 +30,18 @@ public class Menu {
     private final ArrayList<Cards> karty = new ArrayList<>();
 
     public Menu(Elixir elixir) {
-        this.velkostx = 100;
-        this.velkosty = 100;
-        this.polohaX = 50;
-        this.polohaY = 50;
-        this.ikony = new ArrayList<>();
-        this.suradnice = new ArrayList<>();
-        this.rimHlava = new Obrazok("pics/IkonaHlavy/Riman.png");
-        this.rimHlava.zmenPolohu(50, 50);
-        this.lukostrelecHlava = new Obrazok("pics/IkonaHlavy/Lukostrelec.png");
-        this.lukostrelecHlava.zmenPolohu(200, 50);
-        this.kopijnikHlava = new Obrazok("pics/IkonaHlavy/Kopijnik.png");
-        this.kopijnikHlava.zmenPolohu(350, 50);
+        this.width = 100;
+        this.height = 100;
+        this.x = 50;
+        this.y = 50;
+        this.icons = new ArrayList<>();
+        this.coordinations = new ArrayList<>();
+        this.soldierIcon = new Obrazok("pics/HeadIcon/Soldier.png");
+        this.soldierIcon.zmenPolohu(50, 50);
+        this.archerIcon = new Obrazok("pics/HeadIcon/Archer.png");
+        this.archerIcon.zmenPolohu(200, 50);
+        this.spearmanIcon = new Obrazok("pics/HeadIcon/Spearman.png");
+        this.spearmanIcon.zmenPolohu(350, 50);
 
         this.lightning = new Obrazok("pics/Magic/Lightning.png");
         this.lightning.zmenPolohu(1400, 50);
@@ -59,10 +59,10 @@ public class Menu {
         this.manazer = new Manazer();
         this.elixir = elixir;
 
-        this.kartyPostav();
+        this.cardsOfCharacters();
     }
 
-    public void kartyPostav() {
+    public void cardsOfCharacters() {
         Soldier vojak = new Soldier(0, 0, 0, this.elixir, this.manazer, 50);
         Archer luk = new Archer(0, 0, 0, this.elixir, this.manazer, 25);
         SpearMan spearMan = new SpearMan(0, 0, 0, this.elixir, this.manazer, 100);
@@ -81,29 +81,29 @@ public class Menu {
         this.karty.add(healing);
         this.karty.add(shield);
 
-        int x = this.polohaX;
+        int x = this.x;
         for (int i = 0; i < 3; i++) {
             Obdlznik ikona = new Obdlznik();
             ikona.zmenFarbu("black");
-            ikona.zmenStrany(this.velkostx, this.velkosty);
-            ikona.zmenPolohu(x, this.polohaY);
+            ikona.zmenStrany(this.width, this.height);
+            ikona.zmenPolohu(x, this.y);
             ikona.zobraz();
-            this.ikony.add(ikona);
-            this.suradnice.add(new int[]{x, this.polohaY});
+            this.icons.add(ikona);
+            this.coordinations.add(new int[]{x, this.y});
             x += 150;
         }
-        this.rimHlava.zobraz();
-        this.lukostrelecHlava.zobraz();
-        this.kopijnikHlava.zobraz();
+        this.soldierIcon.zobraz();
+        this.archerIcon.zobraz();
+        this.spearmanIcon.zobraz();
 
         for (int i = 0; i < 3; i++) {
-            Obdlznik kuzlo = new Obdlznik();
-            kuzlo.zmenFarbu("black");
-            kuzlo.zmenStrany(this.velkostx, this.velkosty);
-            kuzlo.zmenPolohu(x + 900, this.polohaY);
-            kuzlo.zobraz();
-            this.ikony.add(kuzlo);
-            this.suradnice.add(new int[]{x + 900, this.polohaY});
+            Obdlznik spell = new Obdlznik();
+            spell.zmenFarbu("black");
+            spell.zmenStrany(this.width, this.height);
+            spell.zmenPolohu(x + 900, this.y);
+            spell.zobraz();
+            this.icons.add(spell);
+            this.coordinations.add(new int[]{x + 900, this.y});
             x += 150;
         }
 
@@ -112,13 +112,13 @@ public class Menu {
         this.healing.zobraz();
     }
 
-    public void pohybMysi(int x, int y) {
-        for (int i = 0; i < this.ikony.size(); i++) {
-            Obdlznik ikona = this.ikony.get(i);
-            int ikonax = this.suradnice.get(i)[0];
-            int ikonay = this.suradnice.get(i)[1];
+    public void mouseMovement(int x, int y) {
+        for (int i = 0; i < this.icons.size(); i++) {
+            Obdlznik ikona = this.icons.get(i);
+            int ikonax = this.coordinations.get(i)[0];
+            int ikonay = this.coordinations.get(i)[1];
 
-            if (x >= ikonax && x <= (ikonax + this.velkostx) && y >= ikonay && y <= (ikonay + this.velkosty)) {
+            if (x >= ikonax && x <= (ikonax + this.width) && y >= ikonay && y <= (ikonay + this.height)) {
                 ikona.zmenFarbu("white");
             } else {
                 ikona.zmenFarbu("black");
@@ -126,12 +126,12 @@ public class Menu {
         }
     }
 
-    public void stlacHlavu(int x, int y) {
+    public void clickOnIcon(int x, int y) {
         for (int i = 0; i < this.karty.size(); i++) {
-            int ikonax = this.suradnice.get(i)[0];
-            int ikonay = this.suradnice.get(i)[1];
+            int ikonax = this.coordinations.get(i)[0];
+            int ikonay = this.coordinations.get(i)[1];
 
-            if (x >= ikonax && x <= (ikonax + this.velkostx) && y >= ikonay && y <= (ikonay + this.velkosty)) {
+            if (x >= ikonax && x <= (ikonax + this.width) && y >= ikonay && y <= (ikonay + this.height)) {
                 this.karty.get(i).click();
             }
         }

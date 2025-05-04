@@ -30,7 +30,7 @@ public class HpBar {
         this.externalHp.zmenFarbu("black");
     }
 
-    public void uberHp(int amount) {
+    public void substractHp(int amount) {
         if (shield > 0) {
             if (amount <= shield) {
                 shield -= amount;
@@ -42,25 +42,25 @@ public class HpBar {
         } else {
             hp -= amount;
         }
-        updateZivotov();
+        updateHealth();
     }
 
-    public void nastavHp(int amount) {
+    public void setHP(int amount) {
         this.hp = amount;
-        updateZivotov();
+        updateHealth();
     }
 
     public void setShield(int amount) {
         this.shield = amount;
-        updateZivotov();
+        updateHealth();
     }
 
-    private void updateZivotov() {
+    private void updateHealth() {
         this.internalHp.zmenStrany(Math.max(hp, 0), 8);
         this.internalShield.zmenStrany(shield, 8);
     }
 
-    public void posunNa(int x, int y) {
+    public void moveTo(int x, int y) {
         this.externalHp.zmenPolohu(x, y);
         this.internalHp.zmenPolohu(x, y);
         this.internalShield.zmenPolohu(x, y);
@@ -70,21 +70,17 @@ public class HpBar {
         return this.hp;
     }
 
-    public int getShield() {
-        return this.shield;
-    }
-
-    public void zmenFarbu(String color) {
+    public void changeColor(String color) {
         this.internalHp.zmenFarbu(color);
     }
 
-    public void zobraz() {
+    public void show() {
         this.externalHp.zobraz();
         this.internalHp.zobraz();
         this.internalShield.zobraz();
     }
 
-    public void skry() {
+    public void hide() {
         this.externalHp.skry();
         this.internalHp.skry();
         this.internalShield.skry();

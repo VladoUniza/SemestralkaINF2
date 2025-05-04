@@ -9,49 +9,58 @@ import java.util.ArrayList;
 
 public class Figure extends Character {
     protected Obrazok obrazok;
-    private final int pocetObrazkov;
-    private final int pocetStacObrazkov;
-    protected int animacia;
+    private final int pictureCount;
+    private final int staticPictureCount;
+    protected int animation;
 
-    private int polohaX;
-    private final int polohaY;
+    private int x;
+    private final int y;
     private final int dataX;
     private final int maxHP;
 
-    private final String nazov;
+    private final int range;
+    private final int health;
+    private final int damage;
+
+    private final String name;
     private final HpBar hpBar;
-    private final int rychlost;
+    private final int speed;
     private final boolean isEnemy;
     private boolean isDead;
-    private boolean isAbilityActivated;
+    private boolean alreadyUsedAbility;
 
     private static Player player;
     private static Enemy nepriatelskyHrac;
     private static final ArrayList<Figure> vsetkyPostavy = new ArrayList<>();
 
-    public Figure(int pocetObrazkov, int pocetStacObrazkov, String nazov, int polohaX, int polohaY, int rychlost, boolean isEnemy, int maxHP) {
-        this.maxHP = maxHP;
-        this.animacia = 0;
-        this.nazov = nazov;
-        this.pocetObrazkov = pocetObrazkov;
-        this.pocetStacObrazkov = pocetStacObrazkov;
-        this.rychlost = rychlost;
-        this.polohaX = polohaX;
-        this.polohaY = polohaY;
-        this.isEnemy = isEnemy;
-        this.isAbilityActivated = false;
-        this.obrazok = new Obrazok("pics/" + this.nazov + "/" + this.nazov + "/0.png");
+    public Figure(int pictureCount, int attackPictureCount, String name, int x, int y, int speed, boolean isEnemy, int maxHP, int health, int damage, int range) {
 
-        DataObrazku data = new DataObrazku("pics/" + this.nazov + "/" + this.nazov + "/0.png");
+        this.maxHP = maxHP;
+        this.health = health;
+        this.damage = damage;
+        this.range = range;
+
+        this.animation = 0;
+        this.name = name;
+        this.pictureCount = pictureCount;
+        this.staticPictureCount = attackPictureCount;
+        this.speed = speed;
+        this.x = x;
+        this.y = y;
+        this.isEnemy = isEnemy;
+        this.alreadyUsedAbility = false;
+        this.obrazok = new Obrazok("pics/" + this.name + "/" + this.name + "/0.png");
+
+        DataObrazku data = new DataObrazku("pics/" + this.name + "/" + this.name + "/0.png");
         this.dataX = data.getSirka();
-        this.obrazok.zmenPolohu(this.polohaX, this.polohaY);
+        this.obrazok.zmenPolohu(this.x, this.y);
         this.obrazok.zobraz();
 
         this.isDead = false;
-        this.hpBar = new HpBar(this.polohaX, this.polohaY, this);
-        this.hpBar.zobraz();
+        this.hpBar = new HpBar(this.x, this.y, this);
+        this.hpBar.show();
         if (this.isEnemy) {
-            this.hpBar.zmenFarbu("red");
+            this.hpBar.changeColor("red");
         }
         vsetkyPostavy.add(this);
     }
@@ -71,13 +80,13 @@ public class Figure extends Character {
         }
 
         if (this.isEnemy) {
-            int vzdialenost = Math.abs(this.polohaX - player.getX());
+            int vzdialenost = Math.abs(this.x - player.getX());
             if (vzdialenost <= this.getRange()) {
                 this.attackBuilding(player);
                 return;
             }
         } else {
-            int vzdialenost = Math.abs(this.polohaX - nepriatelskyHrac.getX());
+            int vzdialenost = Math.abs(this.x - nepriatelskyHrac.getX());
             if (vzdialenost <= this.getRange()) {
                 this.attackBuilding(nepriatelskyHrac);
                 return;
@@ -90,7 +99,7 @@ public class Figure extends Character {
             }
 
             if (this.isEnemy != figure.isEnemy) {
-                int vzdialenost = Math.abs(this.polohaX - figure.polohaX);
+                int vzdialenost = Math.abs(this.x - figure.x);
                 if (vzdialenost <= this.getRange()) {
                     this.attack(figure);
                     return;
@@ -104,8 +113,8 @@ public class Figure extends Character {
             }
 
             if (this.isEnemy == figure.isEnemy) {
-                boolean jePredoMnou = (this.isEnemy && figure.polohaX < this.polohaX) || (!this.isEnemy && figure.polohaX > this.polohaX);
-                int vzdialenost = Math.abs(this.polohaX - figure.polohaX);
+                boolean jePredoMnou = (this.isEnemy && figure.x < this.x) || (!this.isEnemy && figure.x > this.x);
+                int vzdialenost = Math.abs(this.x - figure.x);
 
                 if (jePredoMnou && vzdialenost < this.dataX) {
                     this.stop();
@@ -114,36 +123,36 @@ public class Figure extends Character {
             }
         }
 
-        int posun = this.isEnemy ? -this.rychlost : this.rychlost;
+        int posun = this.isEnemy ? -this.speed : this.speed;
         this.obrazok.posunVodorovne(posun);
-        this.polohaX += posun;
-        this.hpBar.posunNa(this.polohaX, this.polohaY);
-        this.hpBar.zobraz();
+        this.x += posun;
+        this.hpBar.moveTo(this.x, this.y);
+        this.hpBar.show();
         this.move();
     }
 
     public void move() {
-        this.obrazok.zmenObrazok("pics/" + this.nazov + "/" + this.nazov + "/" + (this.animacia % this.pocetObrazkov) + ".png");
-        this.animacia++;
+        this.obrazok.zmenObrazok("pics/" + this.name + "/" + this.name + "/" + (this.animation % this.pictureCount) + ".png");
+        this.animation++;
         this.obrazok.zobraz();
     }
 
     public void attack(Figure cielovaPostava) {
         this.obrazok.posunVodorovne(0);
-        this.hpBar.posunNa(this.polohaX, this.polohaY);
-        this.hpBar.zobraz();
-        this.obrazok.zmenObrazok("pics/" + this.nazov + "/utoc" + this.nazov + "/" + (this.animacia % this.pocetStacObrazkov) + ".png");
-        this.animacia++;
+        this.hpBar.moveTo(this.x, this.y);
+        this.hpBar.show();
+        this.obrazok.zmenObrazok("pics/" + this.name + "/attack" + this.name + "/" + (this.animation % this.staticPictureCount) + ".png");
+        this.animation++;
         this.obrazok.zobraz();
         cielovaPostava.takeHP(this.getDamage());
     }
 
     public void attackBuilding(Character cielovaBudova) {
         this.obrazok.posunVodorovne(0);
-        this.hpBar.posunNa(this.polohaX, this.polohaY);
-        this.hpBar.zobraz();
-        this.obrazok.zmenObrazok("pics/" + this.nazov + "/utoc" + this.nazov + "/" + (this.animacia % this.pocetStacObrazkov) + ".png");
-        this.animacia++;
+        this.hpBar.moveTo(this.x, this.y);
+        this.hpBar.show();
+        this.obrazok.zmenObrazok("pics/" + this.name + "/attack" + this.name + "/" + (this.animation % this.staticPictureCount) + ".png");
+        this.animation++;
         this.obrazok.zobraz();
         cielovaBudova.takeHP(this.getDamage());
 
@@ -154,6 +163,9 @@ public class Figure extends Character {
                 text.zmenFarbu("black");
                 text.zmenFont("Arial", StylFontu.BOLD, 200);
                 text.zobraz();
+                for (Figure figure : vsetkyPostavy) {
+                    figure.stop();
+                }
             }
             if (cielovaBudova instanceof Player) {
                 BlokTextu text = new BlokTextu("DEFEAT", 500, 500);
@@ -161,27 +173,30 @@ public class Figure extends Character {
                 text.zmenFont("Arial", StylFontu.BOLD, 200);
                 text.zmenFarbu("black");
                 text.zobraz();
+                for (Figure figure : vsetkyPostavy) {
+                    figure.stop();
+                }
             }
         }
     }
 
     public void stop() {
-        this.obrazok.zmenObrazok("pics/" + this.nazov + "/zastav" + this.nazov + "/0.png");
+        this.obrazok.zmenObrazok("pics/" + this.name + "/stop" + this.name + "/0.png");
         this.obrazok.zobraz();
     }
 
     public void takeHP(int mnozstvo) {
-        this.hpBar.uberHp(mnozstvo);
+        this.hpBar.substractHp(mnozstvo);
         if (this.hpBar.getHp() <= 0) {
             this.obrazok.skry();
-            this.hpBar.skry();
+            this.hpBar.hide();
             this.isDead = true;
             vsetkyPostavy.remove(this);
         }
 
-        if (this.hpBar.getHp() <= this.maxHP / 2 && !this.isAbilityActivated) {
+        if (this.hpBar.getHp() <= this.maxHP / 2 && !this.alreadyUsedAbility) {
             this.ability();
-            this.isAbilityActivated = true;
+            this.alreadyUsedAbility = true;
         }
     }
 
@@ -198,12 +213,12 @@ public class Figure extends Character {
     }
 
     public void setHP(int hp) {
-        this.hpBar.nastavHp(hp);
+        this.hpBar.setHP(hp);
     }
 
     public void hide() {
         this.obrazok.skry();
-        this.hpBar.skry();
+        this.hpBar.hide();
     }
 
     public static ArrayList<Figure> getVsetkyPostavy() {
@@ -212,21 +227,21 @@ public class Figure extends Character {
 
     @Override
     public int getRange() {
-        throw new UnsupportedOperationException("Current character is not defined");
+        return this.range;
     }
 
     @Override
     public int getHealth() {
-        throw new UnsupportedOperationException("Current character is not defined");
+        return this.health;
     }
 
     @Override
     public int getDamage() {
-        throw new UnsupportedOperationException("Current character is not defined");
+        return this.damage;
     }
 
     @Override
     public void ability() {
-        throw new UnsupportedOperationException("Current character is not defined");
+        System.out.println("Current character does not have any abilities");
     }
 }

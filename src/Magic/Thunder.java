@@ -16,11 +16,11 @@ public class Thunder implements Cards {
 
     @Override
     public void click() {
-        if (this.elixir.getpocet() > this.cost()) {
-            this.elixir.odpocitajElixir(this.cost() + 1);
+        if (this.elixir.getcount() > this.cost()) {
+            this.elixir.substractElixir(this.cost() + 1);
             this.takeHalfHP();
         } else {
-            this.elixir.odpocitajElixir(0);
+            this.elixir.substractElixir(0);
         }
     }
 
