@@ -1,5 +1,5 @@
 package Main;
-import Pozadie.StartMiniMenu;
+import Menu.StartMiniMenu;
 
 public class Main {
     public static void main(String[] args) {

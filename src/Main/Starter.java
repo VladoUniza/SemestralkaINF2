@@ -1,11 +1,11 @@
 package Main;
 
-import Postavy.Player;
-import Postavy.Enemies.Enemy;
-import Postavy.Figure;
-import Pozadie.Background;
-import Pozadie.Elixir;
-import Pozadie.Menu;
+import Charaters.Player;
+import Charaters.Enemy;
+import Charaters.Figure;
+import Level.Background;
+import Charaters.Gold;
+import Menu.Menu;
 import fri.shapesge.Manazer;
 
 public class Starter {
@@ -15,21 +15,23 @@ public class Starter {
 
     public void spusti() {
         Manazer manazer = new Manazer();
-        new Background();
-        Elixir elixir = new Elixir();
 
-        Menu menu = new Menu(elixir);
+        Gold gold = new Gold();
+        Background bg = new Background(gold);
+        Menu menu = new Menu(gold);
 
         Enemy enemy = new Enemy();
-        enemy.skryHP();
+        enemy.hideHP();
+
         Player budovaHrac = new Player();
         Enemy budovaNepriatel = new Enemy();
         Figure.initializeBuildings(budovaHrac, budovaNepriatel);
 
         manazer.spravujObjekt(menu);
-        manazer.spravujObjekt(elixir);
+        manazer.spravujObjekt(gold);
         manazer.spravujObjekt(this);
         manazer.spravujObjekt(enemy);
         manazer.spravujObjekt(budovaHrac);
+        manazer.spravujObjekt(bg);
     }
 }

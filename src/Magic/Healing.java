@@ -1,28 +1,28 @@
 package Magic;
 
-import Postavy.Figure;
-import Pozadie.Cards;
-import Pozadie.Elixir;
+import Charaters.Figure;
+import Charaters.Cards;
+import Charaters.Gold;
 
 public class Healing implements Cards {
-    private final Elixir elixir;
+    private final Gold gold;
 
-    public Healing(Elixir elixir) {
-        this.elixir = elixir;
+    public Healing(Gold gold) {
+        this.gold = gold;
     }
 
     @Override
     public void click() {
-        if (this.elixir.getcount() > this.cost()) {
-            this.elixir.substractElixir(this.cost() + 1);
+        if (this.gold.getcount() > this.cost()) {
+            this.gold.substractGold(this.cost() + 1);
 
             for (Figure figure : Figure.getVsetkyPostavy()) {
-                if (figure.getIsEnemy() && figure.getHp() < figure.getMaxHP()) {
+                if (!figure.getIsEnemy() && figure.getHp() < figure.getMaxHP()) {
                     figure.setHP(figure.getMaxHP());
                 }
             }
         } else {
-            this.elixir.substractElixir(0);
+            this.gold.substractGold(0);
         }
     }
 

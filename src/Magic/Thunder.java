@@ -1,26 +1,26 @@
 package Magic;
 
 
-import Postavy.Figure;
-import Pozadie.Cards;
-import Pozadie.Elixir;
+import Charaters.Figure;
+import Charaters.Cards;
+import Charaters.Gold;
 
 import java.util.ArrayList;
 
 public class Thunder implements Cards {
-    private final Elixir elixir;
+    private final Gold gold;
 
-    public Thunder(Elixir elixir) {
-        this.elixir = elixir;
+    public Thunder(Gold gold) {
+        this.gold = gold;
     }
 
     @Override
     public void click() {
-        if (this.elixir.getcount() > this.cost()) {
-            this.elixir.substractElixir(this.cost() + 1);
+        if (this.gold.getcount() > this.cost()) {
+            this.gold.substractGold(this.cost() + 1);
             this.takeHalfHP();
         } else {
-            this.elixir.substractElixir(0);
+            this.gold.substractGold(0);
         }
     }
 
