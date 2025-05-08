@@ -1,9 +1,8 @@
 package Charaters;
 
-import fri.shapesge.BlokTextu;
-import fri.shapesge.DataObrazku;
-import fri.shapesge.Obrazok;
-import fri.shapesge.StylFontu;
+import Menu.Statistics;
+import fri.shapesge.*;
+
 import java.util.ArrayList;
 
 public class Figure extends Character {
@@ -11,6 +10,8 @@ public class Figure extends Character {
     private final int pictureCount;
     private final int staticPictureCount;
     protected int animation;
+    private boolean endingBool = false;
+    private static int numberOfDeadEnemies;
 
     private int x;
     private final int y;
@@ -30,7 +31,7 @@ public class Figure extends Character {
 
     private static Player player;
     private static Enemy nepriatelskyHrac;
-    private static final ArrayList<Figure> vsetkyPostavy = new ArrayList<>();
+    private static final ArrayList<Figure> allFiguresInBattle = new ArrayList<>();
 
     public Figure(int pictureCount, int attackPictureCount, String name, int x, int y, int speed, boolean isEnemy, int maxHP, int health, int damage, int range) {
 
@@ -62,7 +63,7 @@ public class Figure extends Character {
         if (this.isEnemy) {
             this.hpBar.changeColor("red");
         }
-        vsetkyPostavy.add(this);
+        allFiguresInBattle.add(this);
     }
 
     public static void initializeBuildings(Player h, Enemy n) {
@@ -81,19 +82,21 @@ public class Figure extends Character {
 
         if (this.isEnemy) {
             int vzdialenost = Math.abs(this.x - player.getX());
+
             if (vzdialenost <= this.getRange()) {
                 this.attackBuilding(player);
                 return;
             }
         } else {
             int vzdialenost = Math.abs(this.x - nepriatelskyHrac.getX());
+
             if (vzdialenost <= this.getRange()) {
                 this.attackBuilding(nepriatelskyHrac);
                 return;
             }
         }
 
-        for (Figure figure : vsetkyPostavy) {
+        for (Figure figure : allFiguresInBattle) {
             if (figure == this || figure.isDead) {
                 continue;
             }
@@ -107,7 +110,7 @@ public class Figure extends Character {
             }
         }
 
-        for (Figure figure : vsetkyPostavy) {
+        for (Figure figure : allFiguresInBattle) {
             if (figure == this || figure.isDead) {
                 continue;
             }
@@ -163,18 +166,31 @@ public class Figure extends Character {
                 text.zmenFarbu("black");
                 text.zmenFont("Arial", StylFontu.BOLD, 200);
                 text.zobraz();
-                for (Figure figure : vsetkyPostavy) {
+
+                for (Figure figure : allFiguresInBattle) {
+
                     figure.stop();
                 }
+                if (!endingBool) {
+                    new Statistics(numberOfDeadEnemies);
+                    endingBool = true;
+                }
             }
+
             if (cielovaBudova instanceof Player) {
                 BlokTextu text = new BlokTextu("DEFEAT", 500, 500);
                 text.zmenPolohu(500, 500);
                 text.zmenFont("Arial", StylFontu.BOLD, 200);
                 text.zmenFarbu("black");
                 text.zobraz();
-                for (Figure figure : vsetkyPostavy) {
+
+                for (Figure figure : allFiguresInBattle) {
                     figure.stop();
+                }
+
+                if (!endingBool) {
+                    new Statistics(numberOfDeadEnemies);
+                    endingBool = true;
                 }
             }
         }
@@ -191,7 +207,12 @@ public class Figure extends Character {
             this.obrazok.skry();
             this.hpBar.hide();
             this.isDead = true;
-            vsetkyPostavy.remove(this);
+            allFiguresInBattle.remove(this);
+
+            if (!this.isEnemy) {
+                return;
+            }
+            numberOfDeadEnemies++;
         }
 
         if (this.hpBar.getHp() <= this.maxHP / 2 && !this.alreadyUsedAbility) {
@@ -221,8 +242,8 @@ public class Figure extends Character {
         this.hpBar.hide();
     }
 
-    public static ArrayList<Figure> getVsetkyPostavy() {
-        return vsetkyPostavy;
+    public static ArrayList<Figure> getAllFiguresInBattle() {
+        return allFiguresInBattle;
     }
 
     @Override

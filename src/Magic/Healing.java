@@ -16,7 +16,7 @@ public class Healing implements Cards {
         if (this.gold.getcount() > this.cost()) {
             this.gold.substractGold(this.cost() + 1);
 
-            for (Figure figure : Figure.getVsetkyPostavy()) {
+            for (Figure figure : Figure.getAllFiguresInBattle()) {
                 if (!figure.getIsEnemy() && figure.getHp() < figure.getMaxHP()) {
                     figure.setHP(figure.getMaxHP());
                 }

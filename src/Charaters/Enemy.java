@@ -11,7 +11,7 @@ public class Enemy extends Character {
     private int x;
     private final int y;
     private final HpBar hpBar;
-    private int zivoty = 500;
+    private int zivoty = 50;
     private final Random rand;
 
     public Enemy() {
@@ -27,11 +27,11 @@ public class Enemy extends Character {
     public void countdown() {
         int nahoda = rand.nextInt(10);
         if (nahoda <= 5) {
-            var romanSoldier = new Soldier(this.x, this.y, 8, true, this.getHealth());
+            var romanSoldier = new Soldier(this.x, this.y, 10, true, this.getHealth());
             this.manazer.spravujObjekt(romanSoldier);
             this.x -= 8;
         } else if(nahoda <= 8) {
-            var archer = new Archer(this.x, this.y, 8, true, this.getHealth());
+            var archer = new Archer(this.x, this.y, 12, true, this.getHealth());
             this.manazer.spravujObjekt(archer);
             this.x -= 8;
         } else {

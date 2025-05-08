@@ -27,7 +27,7 @@ public class Thunder implements Cards {
     public void takeHalfHP() {
         ArrayList<Figure> naZabitie = new ArrayList<>();
 
-        for (Figure figure : Figure.getVsetkyPostavy()) {
+        for (Figure figure : Figure.getAllFiguresInBattle()) {
             int halfHP = (figure.getMaxHP() / 2) + 1;
             if (figure.getHp() <= halfHP) {
                 naZabitie.add(figure);
@@ -36,7 +36,7 @@ public class Thunder implements Cards {
             }
         }
         for (Figure figure : naZabitie) {
-            figure.takeHP(figure.getHp());
+            figure.takeHP(100);
         }
     }
 

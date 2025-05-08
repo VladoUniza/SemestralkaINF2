@@ -20,7 +20,7 @@ public class Archer extends Figure implements Cards {
     }
     public void click() {
         if (this.gold.getcount() > this.cost() && (this.gold.getcount() - (this.cost() + 1)) >= 0) {
-            Archer lukostrelec = new Archer(200, 900, 8, this.gold, this.manazer, 25);
+            Archer lukostrelec = new Archer(200, 900, 12, this.gold, this.manazer, 25);
             this.gold.substractGold(lukostrelec.cost());
             this.gold.goldSpent(lukostrelec.cost());
             this.manazer.spravujObjekt(lukostrelec);
@@ -34,7 +34,7 @@ public class Archer extends Figure implements Cards {
     }
 
     public void ability() {
-        for (Figure figure : getVsetkyPostavy()) {
+        for (Figure figure : getAllFiguresInBattle()) {
             if (!figure.getIsEnemy() && figure instanceof Archer && (figure.getHp() <= figure.getMaxHP() / 2)) {
                 figure.getHpBar().setShield(25);
             }

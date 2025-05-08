@@ -11,14 +11,14 @@ public class Soldier extends Figure implements Cards {
     private boolean damageDoubled;
 
     public Soldier(int polohaX, int polohaY, int rychlost, Gold gold, Manazer manazer, int maxHP) {
-        super(7, 3, "sword", polohaX, polohaY, rychlost, false, maxHP, 50, 1, 70);
+        super(7, 3, "sword", polohaX, polohaY, rychlost, false, maxHP, 5, 1, 70);
         this.gold = gold;
         this.manazer = manazer;
         this.damageDoubled = false;
     }
 
     public Soldier(int polohaX, int polohaY, int rychlost, boolean jeNepriatel, int maxHP) {
-        super(7, 3, "Esword", polohaX, polohaY, rychlost, jeNepriatel, maxHP, 50, 2, 70);
+        super(7, 3, "Esword", polohaX, polohaY, rychlost, jeNepriatel, maxHP, 5, 2, 70);
         this.damageDoubled = false;
     }
 
@@ -27,7 +27,7 @@ public class Soldier extends Figure implements Cards {
         System.out.println(this.gold.getcount());
         System.out.println(this.cost());
         if (this.gold.getcount() >= this.cost() && (this.gold.getcount() - (this.cost() + 1)) >= 0) {
-            Soldier vojak = new Soldier(200, 900, 8, this.gold, this.manazer, 50);
+            Soldier vojak = new Soldier(200, 900, 10, this.gold, this.manazer, 5);
             this.gold.substractGold(vojak.cost());
             this.gold.goldSpent(vojak.cost());
             this.manazer.spravujObjekt(vojak);
@@ -50,7 +50,7 @@ public class Soldier extends Figure implements Cards {
     @Override
     public void ability() {
         if (!damageDoubled) {
-            for (Figure figure : getVsetkyPostavy()) {
+            for (Figure figure : getAllFiguresInBattle()) {
                 if (!figure.getIsEnemy() && figure instanceof Soldier && figure.getHp() <= figure.getMaxHP() / 2) {
                     damageDoubled = true;
                     break;

@@ -9,7 +9,6 @@ public class HpBar {
     private final Obdlznik internalHp;
     private final Obdlznik externalHp;
 
-
     public HpBar(int x, int y, Character character) {
         this.hp = character.getHealth();
         this.shield = 0;

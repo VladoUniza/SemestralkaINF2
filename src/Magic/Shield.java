@@ -16,7 +16,7 @@ public class Shield implements Cards {
         if (this.gold.getcount() > this.cost()) {
             this.gold.substractGold(this.cost() + 1);
 
-            for (Figure figure : Figure.getVsetkyPostavy()) {
+            for (Figure figure : Figure.getAllFiguresInBattle()) {
                 if (!figure.getIsEnemy() && figure.getHpBar().getShield() > (figure.getMaxHP()/2)) {
                     this.gold.substractGold(0);
                 } else if (!figure.getIsEnemy()) {

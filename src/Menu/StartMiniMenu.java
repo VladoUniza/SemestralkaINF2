@@ -1,13 +1,14 @@
 package Menu;
 
 import Main.Starter;
-
 import javax.swing.*;
 import java.awt.*;
 
 public class StartMiniMenu {
     private final JFrame frame;
     private final JTextField menoField;
+
+    private static String nameOfTheUser;
 
     public StartMiniMenu() {
         frame = new JFrame();
@@ -40,8 +41,7 @@ public class StartMiniMenu {
                 return;
             }
 
-            System.out.println("Zadané meno: " + meno);
-
+            nameOfTheUser = meno;
             Starter starter = new Starter();
             starter.spusti();
 
@@ -53,7 +53,7 @@ public class StartMiniMenu {
         frame.setVisible(true);
     }
 
-    public String getName() {
-        return menoField.getText();
+    public static String getName() {
+        return nameOfTheUser;
     }
 }

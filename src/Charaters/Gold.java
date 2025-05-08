@@ -9,7 +9,7 @@ public class Gold {
     private BlokTextu numberOfGoldSpent;
     private final BlokTextu text1;
     private final BlokTextu text2;
-    private int goldSpent;
+    private static int goldSpent;
 
     public Gold() {
         text1 = new BlokTextu("Gold: ", 500, 150);
@@ -66,7 +66,7 @@ public class Gold {
         goldSpent += number;
     }
 
-    public int getGoldSpent() {
-        return this.goldSpent;
+    public static int getGoldSpent() {
+        return goldSpent;
     }
 }
