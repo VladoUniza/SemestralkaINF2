@@ -1,9 +1,9 @@
 package Magic;
 
 
-import Charaters.Figure;
-import Charaters.Cards;
-import Charaters.Gold;
+import Characters.Figure;
+import Characters.Cards;
+import Characters.Gold;
 
 import java.util.ArrayList;
 

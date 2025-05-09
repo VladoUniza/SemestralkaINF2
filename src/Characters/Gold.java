@@ -1,4 +1,4 @@
-package Charaters;
+package Characters;
 
 import fri.shapesge.*;
 import fri.shapesge.StylFontu;
@@ -47,7 +47,7 @@ public class Gold {
 
     public void tikGoldSpent() {
         this.numberOfGoldSpent.skry();
-        this.numberOfGoldSpent = new BlokTextu(String.valueOf(this.goldSpent),675 , 100);
+        this.numberOfGoldSpent = new BlokTextu(String.valueOf(goldSpent),675 , 100);
         this.numberOfGoldSpent.zmenFont("Arial", StylFontu.BOLD, 40);
         this.numberOfGoldSpent.zmenFarbu("white");
         this.numberOfGoldSpent.zobraz();

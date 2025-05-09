@@ -1,8 +1,8 @@
-package Charaters.PlayableCharacters;
+package Characters.PlayableCharacters;
 
-import Charaters.Cards;
-import Charaters.Figure;
-import Charaters.Gold;
+import Characters.Cards;
+import Characters.Figure;
+import Characters.Gold;
 import fri.shapesge.Manazer;
 
 public class SpearMan extends Figure implements Cards {
@@ -10,13 +10,13 @@ public class SpearMan extends Figure implements Cards {
     private Manazer manazer;
 
     public SpearMan(int polohaX, int polohaY, int rychlost, Gold gold, Manazer manazer, int maxHP) {
-        super(7, 3, "spear", polohaX, polohaY, rychlost, false, maxHP, 1, 3, 70);
+        super(7, 3, "spear", polohaX, polohaY, rychlost, false, maxHP, 100, 3, 70);
         this.gold = gold;
         this.manazer = manazer;
     }
 
     public SpearMan(int polohaX, int polohaY, int rychlost, boolean jeNepriatel, int maxHP) {
-        super(7, 3, "Espear", polohaX, polohaY, rychlost, jeNepriatel, maxHP, 1, 3, 70);
+        super(7, 3, "Espear", polohaX, polohaY, rychlost, jeNepriatel, maxHP, 100, 3, 70);
     }
 
     @Override
@@ -39,7 +39,7 @@ public class SpearMan extends Figure implements Cards {
     @Override
     public void ability() {
         for (Figure figure : getAllFiguresInBattle()) {
-            if (!figure.getIsEnemy() && figure instanceof SpearMan && figure.getHp() <= figure.getMaxHP() / 2) {
+            if (figure.getIsNotEnemy() && figure instanceof SpearMan && figure.getHp() <= figure.getMaxHP() / 2) {
                 figure.setHP(figure.getMaxHP());
             }
         }

@@ -1,8 +1,8 @@
 package Magic;
 
-import Charaters.Figure;
-import Charaters.Cards;
-import Charaters.Gold;
+import Characters.Figure;
+import Characters.Cards;
+import Characters.Gold;
 
 public class Healing implements Cards {
     private final Gold gold;
@@ -17,7 +17,7 @@ public class Healing implements Cards {
             this.gold.substractGold(this.cost() + 1);
 
             for (Figure figure : Figure.getAllFiguresInBattle()) {
-                if (!figure.getIsEnemy() && figure.getHp() < figure.getMaxHP()) {
+                if (figure.getIsNotEnemy() && figure.getHp() < figure.getMaxHP()) {
                     figure.setHP(figure.getMaxHP());
                 }
             }

@@ -1,4 +1,4 @@
-package Charaters;
+package Characters;
 
 public interface Cards {
     void click();

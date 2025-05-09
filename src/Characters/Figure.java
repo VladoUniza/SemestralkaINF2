@@ -1,8 +1,7 @@
-package Charaters;
+package Characters;
 
 import Menu.Statistics;
 import fri.shapesge.*;
-
 import java.util.ArrayList;
 
 public class Figure extends Character {
@@ -18,10 +17,6 @@ public class Figure extends Character {
     private final int dataX;
     private final int maxHP;
 
-    private final int range;
-    private final int health;
-    private final int damage;
-
     private final String name;
     private final HpBar hpBar;
     private final int speed;
@@ -34,11 +29,8 @@ public class Figure extends Character {
     private static final ArrayList<Figure> allFiguresInBattle = new ArrayList<>();
 
     public Figure(int pictureCount, int attackPictureCount, String name, int x, int y, int speed, boolean isEnemy, int maxHP, int health, int damage, int range) {
-
+        super(health, range, damage);
         this.maxHP = maxHP;
-        this.health = health;
-        this.damage = damage;
-        this.range = range;
 
         this.animation = 0;
         this.name = name;
@@ -66,13 +58,9 @@ public class Figure extends Character {
         allFiguresInBattle.add(this);
     }
 
-    public static void initializeBuildings(Player h, Enemy n) {
-        player = h;
+    public static void initializeBuildings(Player p, Enemy n) {
+        player = p;
         nepriatelskyHrac = n;
-    }
-
-    public boolean getIsEnemy() {
-        return this.isEnemy;
     }
 
     public void tik() {
@@ -83,15 +71,15 @@ public class Figure extends Character {
         if (this.isEnemy) {
             int vzdialenost = Math.abs(this.x - player.getX());
 
-            if (vzdialenost <= this.getRange()) {
-                this.attackBuilding(player);
+            if (vzdialenost <= this.Range()) {
+                this.attackCharacterOrBuilding(player);
                 return;
             }
         } else {
             int vzdialenost = Math.abs(this.x - nepriatelskyHrac.getX());
 
-            if (vzdialenost <= this.getRange()) {
-                this.attackBuilding(nepriatelskyHrac);
+            if (vzdialenost <= this.Range()) {
+                this.attackCharacterOrBuilding(nepriatelskyHrac);
                 return;
             }
         }
@@ -103,8 +91,8 @@ public class Figure extends Character {
 
             if (this.isEnemy != figure.isEnemy) {
                 int vzdialenost = Math.abs(this.x - figure.x);
-                if (vzdialenost <= this.getRange()) {
-                    this.attack(figure);
+                if (vzdialenost <= this.Range()) {
+                    this.attackCharacterOrBuilding(figure);
                     return;
                 }
             }
@@ -140,59 +128,56 @@ public class Figure extends Character {
         this.obrazok.zobraz();
     }
 
-    public void attack(Figure cielovaPostava) {
+    public void attackCharacterOrBuilding(Character target) {
         this.obrazok.posunVodorovne(0);
         this.hpBar.moveTo(this.x, this.y);
         this.hpBar.show();
         this.obrazok.zmenObrazok("pics/" + this.name + "/attack" + this.name + "/" + (this.animation % this.staticPictureCount) + ".png");
         this.animation++;
         this.obrazok.zobraz();
-        cielovaPostava.takeHP(this.getDamage());
+
+        target.takeHP(this.Damage());
+
+        if (target.Health() <= 0) {
+            if (target instanceof Enemy) {
+                showVictoryMessage();
+            } else if (target instanceof Player) {
+                showDefeatMessage();
+            }
+        }
     }
 
-    public void attackBuilding(Character cielovaBudova) {
-        this.obrazok.posunVodorovne(0);
-        this.hpBar.moveTo(this.x, this.y);
-        this.hpBar.show();
-        this.obrazok.zmenObrazok("pics/" + this.name + "/attack" + this.name + "/" + (this.animation % this.staticPictureCount) + ".png");
-        this.animation++;
-        this.obrazok.zobraz();
-        cielovaBudova.takeHP(this.getDamage());
+    private void showVictoryMessage() {
+        BlokTextu text = new BlokTextu("VICTORY", 500, 500);
+        text.zmenPolohu(500, 500);
+        text.zmenFarbu("black");
+        text.zmenFont("Arial", StylFontu.BOLD, 200);
+        text.zobraz();
 
-        if (cielovaBudova.getHealth() <= 0) {
-            if (cielovaBudova instanceof Enemy) {
-                BlokTextu text = new BlokTextu("VICTORY", 500, 500);
-                text.zmenPolohu(500, 500);
-                text.zmenFarbu("black");
-                text.zmenFont("Arial", StylFontu.BOLD, 200);
-                text.zobraz();
+        stopAllFigures();
+        if (!endingBool) {
+            new Statistics(numberOfDeadEnemies);
+            endingBool = true;
+        }
+    }
 
-                for (Figure figure : allFiguresInBattle) {
+    private void showDefeatMessage() {
+        BlokTextu text = new BlokTextu("DEFEAT", 500, 500);
+        text.zmenPolohu(500, 500);
+        text.zmenFont("Arial", StylFontu.BOLD, 200);
+        text.zmenFarbu("black");
+        text.zobraz();
 
-                    figure.stop();
-                }
-                if (!endingBool) {
-                    new Statistics(numberOfDeadEnemies);
-                    endingBool = true;
-                }
-            }
+        stopAllFigures();
+        if (!endingBool) {
+            new Statistics(numberOfDeadEnemies);
+            endingBool = true;
+        }
+    }
 
-            if (cielovaBudova instanceof Player) {
-                BlokTextu text = new BlokTextu("DEFEAT", 500, 500);
-                text.zmenPolohu(500, 500);
-                text.zmenFont("Arial", StylFontu.BOLD, 200);
-                text.zmenFarbu("black");
-                text.zobraz();
-
-                for (Figure figure : allFiguresInBattle) {
-                    figure.stop();
-                }
-
-                if (!endingBool) {
-                    new Statistics(numberOfDeadEnemies);
-                    endingBool = true;
-                }
-            }
+    private void stopAllFigures() {
+        for (Figure figure : allFiguresInBattle) {
+            figure.stop();
         }
     }
 
@@ -221,6 +206,22 @@ public class Figure extends Character {
         }
     }
 
+    public static ArrayList<Figure> getAllFiguresInBattle() {
+        return allFiguresInBattle;
+    }
+
+    public void ability() {
+        for (Figure figure : getAllFiguresInBattle()) {
+            if (figure.getIsNotEnemy() && figure.getHp() <= figure.getMaxHP() / 2) {
+                figure.setHP(figure.getMaxHP());
+            }
+        }
+    }
+
+    public boolean getIsNotEnemy() {
+        return !this.isEnemy;
+    }
+
     public HpBar getHpBar() {
         return this.hpBar;
     }
@@ -240,29 +241,5 @@ public class Figure extends Character {
     public void hide() {
         this.obrazok.skry();
         this.hpBar.hide();
-    }
-
-    public static ArrayList<Figure> getAllFiguresInBattle() {
-        return allFiguresInBattle;
-    }
-
-    @Override
-    public int getRange() {
-        return this.range;
-    }
-
-    @Override
-    public int getHealth() {
-        return this.health;
-    }
-
-    @Override
-    public int getDamage() {
-        return this.damage;
-    }
-
-    @Override
-    public void ability() {
-        System.out.println("Current character does not have any abilities");
     }
 }

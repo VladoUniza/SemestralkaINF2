@@ -1,8 +1,8 @@
-package Charaters.PlayableCharacters;
+package Characters.PlayableCharacters;
 
-import Charaters.Cards;
-import Charaters.Figure;
-import Charaters.Gold;
+import Characters.Cards;
+import Characters.Figure;
+import Characters.Gold;
 import fri.shapesge.Manazer;
 
 public class Archer extends Figure implements Cards {
@@ -35,7 +35,7 @@ public class Archer extends Figure implements Cards {
 
     public void ability() {
         for (Figure figure : getAllFiguresInBattle()) {
-            if (!figure.getIsEnemy() && figure instanceof Archer && (figure.getHp() <= figure.getMaxHP() / 2)) {
+            if (figure.getIsNotEnemy() && figure instanceof Archer && (figure.getHp() <= figure.getMaxHP() / 2)) {
                 figure.getHpBar().setShield(25);
             }
         }

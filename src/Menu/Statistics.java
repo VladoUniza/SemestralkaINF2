@@ -1,12 +1,11 @@
 package Menu;
 
-import Charaters.Gold;
+import Characters.Gold;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class Statistics {
-;
 
     public Statistics(int enemiesKilled) {
         JFrame frame = new JFrame("Statistics");

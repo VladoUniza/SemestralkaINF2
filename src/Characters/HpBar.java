@@ -1,4 +1,4 @@
-package Charaters;
+package Characters;
 
 import fri.shapesge.Obdlznik;
 
@@ -10,7 +10,7 @@ public class HpBar {
     private final Obdlznik externalHp;
 
     public HpBar(int x, int y, Character character) {
-        this.hp = character.getHealth();
+        this.hp = character.Health();
         this.shield = 0;
         this.externalHp = new Obdlznik();
         this.internalHp = new Obdlznik();

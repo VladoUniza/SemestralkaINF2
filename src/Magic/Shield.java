@@ -1,8 +1,8 @@
 package Magic;
 
-import Charaters.Figure;
-import Charaters.Cards;
-import Charaters.Gold;
+import Characters.Figure;
+import Characters.Cards;
+import Characters.Gold;
 
 public class Shield implements Cards {
     private final Gold gold;
@@ -17,9 +17,9 @@ public class Shield implements Cards {
             this.gold.substractGold(this.cost() + 1);
 
             for (Figure figure : Figure.getAllFiguresInBattle()) {
-                if (!figure.getIsEnemy() && figure.getHpBar().getShield() > (figure.getMaxHP()/2)) {
+                if (figure.getIsNotEnemy() && figure.getHpBar().getShield() > (figure.getMaxHP()/2)) {
                     this.gold.substractGold(0);
-                } else if (!figure.getIsEnemy()) {
+                } else if (figure.getIsNotEnemy()) {
                     figure.getHpBar().setShield(figure.getMaxHP()/2);
                 }
             }
