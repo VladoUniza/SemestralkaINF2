@@ -23,15 +23,15 @@ public abstract class Character {
     protected void updateHpBar(int amount) {
     }
 
-    public int Health() {
+    public int getHealth() {
         return health;
     }
 
-    public int Range() {
+    public int getRange() {
         return range;
     }
 
-    public int Damage() {
+    public int getDamage() {
         return damage;
     }
 }

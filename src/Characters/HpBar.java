@@ -10,7 +10,7 @@ public class HpBar {
     private final Obdlznik externalHp;
 
     public HpBar(int x, int y, Character character) {
-        this.hp = character.Health();
+        this.hp = character.getHealth();
         this.shield = 0;
         this.externalHp = new Obdlznik();
         this.internalHp = new Obdlznik();

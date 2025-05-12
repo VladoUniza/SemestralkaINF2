@@ -14,11 +14,12 @@ public class Healing implements Cards {
     @Override
     public void click() {
         if (this.gold.getcount() > this.cost()) {
-            this.gold.substractGold(this.cost() + 1);
+            this.gold.substractGold(this.cost());
+            this.gold.goldSpent(this.cost());
 
             for (Figure figure : Figure.getAllFiguresInBattle()) {
-                if (figure.getIsNotEnemy() && figure.getHp() < figure.getMaxHP()) {
-                    figure.setHP(figure.getMaxHP());
+                if (figure.getIsNotEnemy() && figure.getHpFromHpBar() < figure.getMaxHP()) {
+                    figure.setHPOfHpBar(figure.getMaxHP());
                 }
             }
         } else {

@@ -1,4 +1,5 @@
 package Characters;
+
 import Characters.PlayableCharacters.Archer;
 import Characters.PlayableCharacters.Soldier;
 import Characters.PlayableCharacters.SpearMan;
@@ -6,18 +7,20 @@ import fri.shapesge.Manazer;
 import java.util.Random;
 
 public class Enemy extends Character {
+    private static final int POLOHAX = 1620;
+    private static final int POLOHAY = 900;
+
+    private static final int SOLDIER_SPEED = 10;
+    private static final int ARCHER_SPEED = 12;
+    private static final int SPEARMAN_SPEED = 8;
 
     private final Manazer manazer;
-    private int x;
-    private final int y;
     private final HpBar hpBar;
     private final Random rand;
 
     public Enemy() {
         super(500, 0,0);
         this.manazer = new Manazer();
-        this.x = 1620;
-        this.y = 900;
         this.hpBar = new HpBar(1400, 700, this);
         this.hpBar.changeColor("red");
         this.hpBar.show();
@@ -27,17 +30,14 @@ public class Enemy extends Character {
     public void countdown() {
         int nahoda = rand.nextInt(10);
         if (nahoda <= 5) {
-            var romanSoldier = new Soldier(this.x, this.y, 10, true, this.Health());
+            var romanSoldier = new Soldier(POLOHAX, POLOHAY, SOLDIER_SPEED, true, this.getHealth());
             this.manazer.spravujObjekt(romanSoldier);
-            this.x -= 8;
         } else if(nahoda <= 8) {
-            var archer = new Archer(this.x, this.y, 12, true, this.Health());
+            var archer = new Archer(POLOHAX, POLOHAY, ARCHER_SPEED, true, this.getHealth());
             this.manazer.spravujObjekt(archer);
-            this.x -= 8;
         } else {
-            var spearman = new SpearMan(this.x, this.y, 8, true, this.Health());
+            var spearman = new SpearMan(POLOHAX, POLOHAY, SPEARMAN_SPEED, true, this.getHealth());
             this.manazer.spravujObjekt(spearman);
-            this.x -= 8;
         }
     }
 
@@ -47,6 +47,6 @@ public class Enemy extends Character {
     }
 
     public int getX() {
-        return 1670;
+        return POLOHAX;
     }
 }

@@ -11,6 +11,8 @@ import Characters.PlayableCharacters.SpearMan;
 import fri.shapesge.Manazer;
 import fri.shapesge.Obdlznik;
 import fri.shapesge.Obrazok;
+import fri.shapesge.BlokTextu;
+import fri.shapesge.StylFontu;
 import java.util.ArrayList;
 
 public class Menu {
@@ -19,17 +21,23 @@ public class Menu {
     private final int height;
     private final int x;
     private final int y;
-    private final ArrayList<Obdlznik> icons;
-    private final ArrayList<int[]> coordinations;
-    private final Obrazok soldierIcon;
-    private final Obrazok archerIcon;
-    private final Obrazok spearmanIcon;
-    private final Obrazok healing;
-    private final Obrazok lightning;
-    private final Obrazok shield;
+
     private final Manazer manazer;
     private final Gold gold;
     private final ArrayList<Cards> karty = new ArrayList<>();
+    private final ArrayList<Obdlznik> icons;
+    private final ArrayList<int[]> coordinations;
+
+    private final Obrazok soldierIcon;
+    private final Obrazok archerIcon;
+    private final Obrazok spearmanIcon;
+
+    private final Obrazok healing;
+    private final Obrazok lightning;
+    private final Obrazok shield;
+
+    private final BlokTextu text1;
+    private final BlokTextu text2;
 
     public Menu(Gold gold) {
         this.width = 100;
@@ -38,6 +46,9 @@ public class Menu {
         this.y = 50;
         this.icons = new ArrayList<>();
         this.coordinations = new ArrayList<>();
+        this.manazer = new Manazer();
+        this.gold = gold;
+
         this.soldierIcon = new Obrazok("pics/HeadIcon/Soldier.png");
         this.soldierIcon.zmenPolohu(50, 50);
         this.archerIcon = new Obrazok("pics/HeadIcon/Archer.png");
@@ -58,8 +69,15 @@ public class Menu {
         obdlznik.zobraz();
         obdlznik.zmenFarbu("black");
 
-        this.manazer = new Manazer();
-        this.gold = gold;
+        this.text1 = new BlokTextu("Gold: ", 500, 150);
+        this.text1.zmenFarbu("white");
+        this.text1.zmenFont("Arial", StylFontu.BOLD, 30);
+        this.text1.zobraz();
+
+        this.text2 = new BlokTextu("Gold spent: ", 500, 100);
+        this.text2.zmenFarbu("white");
+        this.text2.zmenFont("Arial", StylFontu.BOLD, 30);
+        this.text2.zobraz();
 
         this.cardsOfCharacters();
     }

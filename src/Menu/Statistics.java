@@ -1,7 +1,6 @@
 package Menu;
 
 import Characters.Gold;
-
 import javax.swing.*;
 import java.awt.*;
 

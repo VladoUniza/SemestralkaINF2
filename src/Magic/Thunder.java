@@ -17,7 +17,8 @@ public class Thunder implements Cards {
     @Override
     public void click() {
         if (this.gold.getcount() > this.cost()) {
-            this.gold.substractGold(this.cost() + 1);
+            this.gold.substractGold(this.cost());
+            this.gold.goldSpent(this.cost());
             this.takeHalfHP();
         } else {
             this.gold.substractGold(0);
@@ -25,18 +26,15 @@ public class Thunder implements Cards {
     }
 
     public void takeHalfHP() {
-        ArrayList<Figure> naZabitie = new ArrayList<>();
+        ArrayList<Figure> copy = new ArrayList<>(Figure.getAllFiguresInBattle());
+        for (Figure figure : copy) {
+            int halfHP = (figure.getMaxHP() / 2);
 
-        for (Figure figure : Figure.getAllFiguresInBattle()) {
-            int halfHP = (figure.getMaxHP() / 2) + 1;
-            if (figure.getHp() <= halfHP) {
-                naZabitie.add(figure);
+            if (figure.getHpFromHpBar() <= halfHP) {
+                figure.takeHP(100);
             } else {
                 figure.takeHP(halfHP);
             }
-        }
-        for (Figure figure : naZabitie) {
-            figure.takeHP(100);
         }
     }
 
