@@ -36,9 +36,6 @@ public class Menu {
     private final Obrazok lightning;
     private final Obrazok shield;
 
-    private final BlokTextu text1;
-    private final BlokTextu text2;
-
     public Menu(Gold gold) {
         this.width = 100;
         this.height = 100;
@@ -69,15 +66,15 @@ public class Menu {
         obdlznik.zobraz();
         obdlznik.zmenFarbu("black");
 
-        this.text1 = new BlokTextu("Gold: ", 500, 150);
-        this.text1.zmenFarbu("white");
-        this.text1.zmenFont("Arial", StylFontu.BOLD, 30);
-        this.text1.zobraz();
+        BlokTextu text1 = new BlokTextu("Gold: ", 500, 150);
+        text1.zmenFarbu("white");
+        text1.zmenFont("Arial", StylFontu.BOLD, 30);
+        text1.zobraz();
 
-        this.text2 = new BlokTextu("Gold spent: ", 500, 100);
-        this.text2.zmenFarbu("white");
-        this.text2.zmenFont("Arial", StylFontu.BOLD, 30);
-        this.text2.zobraz();
+        BlokTextu text2 = new BlokTextu("Gold spent: ", 500, 100);
+        text2.zmenFarbu("white");
+        text2.zmenFont("Arial", StylFontu.BOLD, 30);
+        text2.zobraz();
 
         this.cardsOfCharacters();
     }

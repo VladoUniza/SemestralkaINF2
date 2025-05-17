@@ -7,8 +7,9 @@ import java.awt.event.ActionListener;
 
 public class StartMiniMenu {
     private JPanel panel;
-    private JButton potvrdButton;
     private JTextField menoField;
+    private JButton potvrdButton;
+    private JButton loadGameButton;
 
     private static String nameOfTheUser;
 
@@ -34,6 +35,13 @@ public class StartMiniMenu {
                 starter.spusti();
 
                 frame.dispose();
+            }
+        });
+
+        loadGameButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
             }
         });
     }

@@ -60,6 +60,8 @@ public abstract class Figure extends Character {
         allFiguresInBattle.add(this);
     }
 
+    public abstract void ability();
+
     public void tik() {
         if (this.isDead) {
             return;
@@ -69,14 +71,14 @@ public abstract class Figure extends Character {
             int vzdialenost = Math.abs(this.x - player.getX());
 
             if (vzdialenost <= this.getRange()) {
-                this.attackCharacterOrBuilding(player);
+                this.attackCharacterOrPlayer(player);
                 return;
             }
         } else {
             int vzdialenost = Math.abs(this.x - enemyPlayer.getX());
 
             if (vzdialenost <= this.getRange()) {
-                this.attackCharacterOrBuilding(enemyPlayer);
+                this.attackCharacterOrPlayer(enemyPlayer);
                 return;
             }
         }
@@ -89,7 +91,7 @@ public abstract class Figure extends Character {
             if (this.isEnemy != figure.isEnemy) {
                 int vzdialenost = Math.abs(this.x - figure.x);
                 if (vzdialenost <= this.getRange()) {
-                    this.attackCharacterOrBuilding(figure);
+                    this.attackCharacterOrPlayer(figure);
                     return;
                 }
             }
@@ -105,7 +107,7 @@ public abstract class Figure extends Character {
                 int vzdialenost = Math.abs(this.x - figure.x);
 
                 if (jePredoMnou && vzdialenost < this.dataX) {
-                    this.stop();
+                    this.stopAnimation();
                     return;
                 }
             }
@@ -125,7 +127,7 @@ public abstract class Figure extends Character {
         this.picture.zobraz();
     }
 
-    public void attackCharacterOrBuilding(Character target) {
+    public void attackCharacterOrPlayer(Character target) {
         this.picture.posunVodorovne(0);
         this.hpBar.moveTo(this.x, this.y);
         this.hpBar.show();
@@ -134,13 +136,23 @@ public abstract class Figure extends Character {
         this.picture.zobraz();
 
         target.takeHP(this.getDamage());
-
         if (target.getHealth() <= 0) {
             if (target instanceof Enemy) {
                 showVictoryMessage();
             } else if (target instanceof Player) {
                 showDefeatMessage();
             }
+        }
+    }
+
+    public void stopAnimation() {
+        this.picture.zmenObrazok("pics/" + this.name + "/stop" + this.name + "/0.png");
+        this.picture.zobraz();
+    }
+
+    private void stopAllFigures() {
+        for (Figure figure : allFiguresInBattle) {
+            figure.stopAnimation();
         }
     }
 
@@ -172,17 +184,6 @@ public abstract class Figure extends Character {
         }
     }
 
-    private void stopAllFigures() {
-        for (Figure figure : allFiguresInBattle) {
-            figure.stop();
-        }
-    }
-
-    public void stop() {
-        this.picture.zmenObrazok("pics/" + this.name + "/stop" + this.name + "/0.png");
-        this.picture.zobraz();
-    }
-
     public void takeHP(int mnozstvo) {
         if (this.hpBar == null) {
             return;
@@ -206,8 +207,6 @@ public abstract class Figure extends Character {
         }
     }
 
-    public abstract void ability();
-
     public static void initializeBuildings(Player p, Enemy n) {
         player = p;
         enemyPlayer = n;
@@ -215,6 +214,10 @@ public abstract class Figure extends Character {
 
     public static ArrayList<Figure> getAllFiguresInBattle() {
         return allFiguresInBattle;
+    }
+
+    public void incrementNumberOfDeadEnemies(int number) {
+        numberOfDeadEnemies += number;
     }
 
     public boolean getIsNotEnemy() {

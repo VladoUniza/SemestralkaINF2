@@ -20,7 +20,7 @@ public class Starter {
         Background bg = new Background();
         Menu menu = new Menu(gold);
 
-        Enemy enemy = new Enemy();
+        Enemy enemy = new Enemy(Figure.getAllFiguresInBattle());
         Player player = new Player();
         Figure.initializeBuildings(player, enemy);
 

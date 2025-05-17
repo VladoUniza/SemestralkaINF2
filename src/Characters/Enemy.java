@@ -4,11 +4,13 @@ import Characters.PlayableCharacters.Archer;
 import Characters.PlayableCharacters.Soldier;
 import Characters.PlayableCharacters.SpearMan;
 import fri.shapesge.Manazer;
+
+import java.util.List;
 import java.util.Random;
 
 public class Enemy extends Character {
-    private static final int POLOHAX = 1620;
-    private static final int POLOHAY = 900;
+    private static final int POSITION_X = 1620;
+    private static final int POSITION_Y = 900;
 
     private static final int SOLDIER_SPEED = 10;
     private static final int ARCHER_SPEED = 12;
@@ -18,26 +20,55 @@ public class Enemy extends Character {
     private final HpBar hpBar;
     private final Random rand;
 
-    public Enemy() {
-        super(500, 0,0);
+    private final List<Figure> allUnitsInBattle;
+
+    public Enemy(List<Figure> allUnitsInBattle) {
+        super(500, 0, 0);
         this.manazer = new Manazer();
         this.hpBar = new HpBar(1400, 700, this);
         this.hpBar.changeColor("red");
         this.hpBar.show();
         this.rand = new Random();
+        this.allUnitsInBattle = allUnitsInBattle;
     }
 
     public void countdown() {
-        int nahoda = rand.nextInt(10);
-        if (nahoda <= 5) {
-            var romanSoldier = new Soldier(POLOHAX, POLOHAY, SOLDIER_SPEED, true, this.getHealth());
-            this.manazer.spravujObjekt(romanSoldier);
-        } else if(nahoda <= 8) {
-            var archer = new Archer(POLOHAX, POLOHAY, ARCHER_SPEED, true, this.getHealth());
-            this.manazer.spravujObjekt(archer);
+        int archers = 0;
+        int soldiers = 0;
+        int spearmans = 0;
+
+        for (Figure figure : allUnitsInBattle) {
+            if (figure.getIsNotEnemy()) {
+                continue;
+            }
+            if (figure instanceof Archer) {
+                archers++;
+            } else if (figure instanceof Soldier) {
+                soldiers++;
+            } else if (figure instanceof SpearMan) {
+                spearmans++;
+            }
+        }
+
+        if (allUnitsInBattle.size() <= 2) {
+            int choice = rand.nextInt(3);
+            switch (choice) {
+                case 0:
+                    manazer.spravujObjekt(new Soldier(POSITION_X, POSITION_Y, SOLDIER_SPEED, true, this.getHealth()));
+                    break;
+                case 1:
+                    manazer.spravujObjekt(new Archer(POSITION_X, POSITION_Y, ARCHER_SPEED, true, this.getHealth()));
+                    break;
+                default:
+                    manazer.spravujObjekt(new SpearMan(POSITION_X, POSITION_Y, SPEARMAN_SPEED, true, this.getHealth()));
+                    break;
+            }
+        } else if (soldiers > archers || spearmans > archers) {
+            manazer.spravujObjekt(new Archer(POSITION_X, POSITION_Y, ARCHER_SPEED, true, this.getHealth()));
+        } else if (archers >= 3) {
+            manazer.spravujObjekt(new SpearMan(POSITION_X, POSITION_Y, SPEARMAN_SPEED, true, this.getHealth()));
         } else {
-            var spearman = new SpearMan(POLOHAX, POLOHAY, SPEARMAN_SPEED, true, this.getHealth());
-            this.manazer.spravujObjekt(spearman);
+            manazer.spravujObjekt(new Soldier(POSITION_X, POSITION_Y, SOLDIER_SPEED, true, this.getHealth()));
         }
     }
 
@@ -47,6 +78,6 @@ public class Enemy extends Character {
     }
 
     public int getX() {
-        return POLOHAX;
+        return POSITION_X;
     }
 }

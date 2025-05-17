@@ -32,6 +32,7 @@ public class Thunder implements Cards {
 
             if (figure.getHpFromHpBar() <= halfHP) {
                 figure.takeHP(100);
+                figure.incrementNumberOfDeadEnemies(1);
             } else {
                 figure.takeHP(halfHP);
             }

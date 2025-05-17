@@ -9,7 +9,7 @@ public class Soldier extends Figure implements Cards {
     private static final int SOLDIER_HP = 50;
     private static final int SOLDIER_DAMAGE = 1;
     private static final int SOLDIER_RANGE = 70;
-    private static final int SOLDIER_SPEED = 10;
+    private static final int SOLDIER_SPEED = 16;
 
     private Gold gold;
     private Manazer manazer;
@@ -29,13 +29,13 @@ public class Soldier extends Figure implements Cards {
 
     @Override
     public void click() {
-        System.out.println(this.gold.getcount());
-        System.out.println(this.cost());
         if (this.gold.getcount() >= this.cost()) {
             Soldier vojak = new Soldier(200, 900, SOLDIER_SPEED, this.gold, this.manazer, SOLDIER_HP);
             this.gold.substractGold(vojak.cost());
             this.gold.goldSpent(vojak.cost());
             this.manazer.spravujObjekt(vojak);
+        } else {
+            this.gold.substractGold(0);
         }
     }
 
