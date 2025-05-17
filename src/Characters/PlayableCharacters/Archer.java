@@ -1,8 +1,9 @@
 package Characters.PlayableCharacters;
 
+import Characters.Battlefield;
 import Characters.Cards;
 import Characters.Figure;
-import Characters.Gold;
+import Hud.Gold;
 import fri.shapesge.Manazer;
 
 public class Archer extends Figure implements Cards {
@@ -29,7 +30,7 @@ public class Archer extends Figure implements Cards {
         if (this.gold.getcount() >= this.cost()) {
             Archer lukostrelec = new Archer(200, 900, ARCHER_SPEED, this.gold, this.manazer, ARCHER_HP);
             this.gold.substractGold(lukostrelec.cost());
-            this.gold.goldSpent(lukostrelec.cost());
+            this.gold.setGoldSpent(lukostrelec.cost());
             this.manazer.spravujObjekt(lukostrelec);
         } else {
             this.gold.substractGold(0);
@@ -43,8 +44,8 @@ public class Archer extends Figure implements Cards {
 
     @Override
     public void ability() {
-        for (Figure figure : getAllFiguresInBattle()) {
-            if (figure.getIsNotEnemy() && figure instanceof Archer && (figure.getHpFromHpBar() <= figure.getMaxHP() / 2)) {
+        for (Figure figure : Battlefield.getAllFiguresInBattle()) {
+            if (figure.getIsAlly() && (figure.getHpFromHpBar() <= figure.getMaxHP() / 2)) {
                 figure.getHpBar().setShield(25);
             }
         }

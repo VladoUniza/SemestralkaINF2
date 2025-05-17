@@ -1,10 +1,11 @@
 package Characters;
 
+import Hud.HpBar;
 import Menu.Statistics;
 import fri.shapesge.*;
-import java.util.ArrayList;
 
 public abstract class Figure extends Character {
+
     protected Obrazok picture;
     private final int pictureCount;
     private final int attackPictureCount;
@@ -25,12 +26,12 @@ public abstract class Figure extends Character {
     private static Player player;
     private static Enemy enemyPlayer;
     private static int numberOfDeadEnemies;
-    private static final ArrayList<Figure> allFiguresInBattle = new ArrayList<>();
 
-    private boolean endScreenBool = false;
+    private boolean endScreenBool = true;
 
     public Figure(int pictureCount, int attackPictureCount, String name, int x, int y, int speed, boolean isEnemy, int maxHP, int health, int damage, int range) {
         super(health, range, damage);
+        Battlefield.addFigure(this);
 
         this.x = x;
         this.y = y;
@@ -56,8 +57,6 @@ public abstract class Figure extends Character {
 
         DataObrazku data = new DataObrazku("pics/" + this.name + "/" + this.name + "/0.png");
         this.dataX = data.getSirka();
-
-        allFiguresInBattle.add(this);
     }
 
     public abstract void ability();
@@ -69,21 +68,19 @@ public abstract class Figure extends Character {
 
         if (this.isEnemy) {
             int vzdialenost = Math.abs(this.x - player.getX());
-
             if (vzdialenost <= this.getRange()) {
                 this.attackCharacterOrPlayer(player);
                 return;
             }
         } else {
             int vzdialenost = Math.abs(this.x - enemyPlayer.getX());
-
             if (vzdialenost <= this.getRange()) {
                 this.attackCharacterOrPlayer(enemyPlayer);
                 return;
             }
         }
 
-        for (Figure figure : allFiguresInBattle) {
+        for (Figure figure : Battlefield.getAllFiguresInBattle()) {
             if (figure == this || figure.isDead) {
                 continue;
             }
@@ -97,7 +94,7 @@ public abstract class Figure extends Character {
             }
         }
 
-        for (Figure figure : allFiguresInBattle) {
+        for (Figure figure : Battlefield.getAllFiguresInBattle()) {
             if (figure == this || figure.isDead) {
                 continue;
             }
@@ -113,7 +110,13 @@ public abstract class Figure extends Character {
             }
         }
 
-        int posun = this.isEnemy ? -this.speed : this.speed;
+        int posun;
+        if (this.isEnemy) {
+            posun = -this.speed;
+        } else {
+            posun = this.speed;
+        }
+
         this.picture.posunVodorovne(posun);
         this.x += posun;
         this.hpBar.moveTo(this.x, this.y);
@@ -137,10 +140,11 @@ public abstract class Figure extends Character {
 
         target.takeHP(this.getDamage());
         if (target.getHealth() <= 0) {
-            if (target instanceof Enemy) {
-                showVictoryMessage();
-            } else if (target instanceof Player) {
-                showDefeatMessage();
+            target.onDeath();
+
+            if (endScreenBool) {
+                endScreenBool = false;
+                new Statistics(numberOfDeadEnemies);
             }
         }
     }
@@ -150,50 +154,17 @@ public abstract class Figure extends Character {
         this.picture.zobraz();
     }
 
-    private void stopAllFigures() {
-        for (Figure figure : allFiguresInBattle) {
-            figure.stopAnimation();
-        }
-    }
-
-    private void showVictoryMessage() {
-        BlokTextu text = new BlokTextu("VICTORY", 500, 500);
-        text.zmenPolohu(500, 500);
-        text.zmenFarbu("black");
-        text.zmenFont("Arial", StylFontu.BOLD, 200);
-        text.zobraz();
-
-        stopAllFigures();
-        if (!endScreenBool) {
-            new Statistics(numberOfDeadEnemies);
-            endScreenBool = true;
-        }
-    }
-
-    private void showDefeatMessage() {
-        BlokTextu text = new BlokTextu("DEFEAT", 500, 500);
-        text.zmenPolohu(500, 500);
-        text.zmenFont("Arial", StylFontu.BOLD, 200);
-        text.zmenFarbu("black");
-        text.zobraz();
-
-        stopAllFigures();
-        if (!endScreenBool) {
-            new Statistics(numberOfDeadEnemies);
-            endScreenBool = true;
-        }
-    }
-
-    public void takeHP(int mnozstvo) {
+    @Override
+    public void takeHP(int amount) {
         if (this.hpBar == null) {
             return;
         }
-        this.hpBar.substractHp(mnozstvo);
+        this.hpBar.substractHp(amount);
         if (this.hpBar.getHp() <= 0) {
             this.picture.skry();
             this.hpBar.hide();
             this.isDead = true;
-            allFiguresInBattle.remove(this);
+            Battlefield.removeFigure(this);
 
             if (!this.isEnemy) {
                 return;
@@ -212,15 +183,15 @@ public abstract class Figure extends Character {
         enemyPlayer = n;
     }
 
-    public static ArrayList<Figure> getAllFiguresInBattle() {
-        return allFiguresInBattle;
-    }
-
-    public void incrementNumberOfDeadEnemies(int number) {
+    public static void incrementNumberOfDeadEnemies(int number) {
         numberOfDeadEnemies += number;
     }
 
-    public boolean getIsNotEnemy() {
+    public static int getNumberOfDeadEnemies() {
+        return numberOfDeadEnemies;
+    }
+
+    public boolean getIsAlly() {
         return !this.isEnemy;
     }
 

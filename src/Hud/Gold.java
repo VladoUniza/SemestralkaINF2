@@ -1,4 +1,4 @@
-package Characters;
+package Hud;
 
 import fri.shapesge.*;
 
@@ -49,7 +49,7 @@ public class Gold {
         return this.count;
     }
 
-    public void goldSpent(int number) {
+    public void setGoldSpent(int number) {
         goldSpent += number;
     }
 

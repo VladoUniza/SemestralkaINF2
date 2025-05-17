@@ -3,7 +3,10 @@ package Characters;
 import Characters.PlayableCharacters.Archer;
 import Characters.PlayableCharacters.Soldier;
 import Characters.PlayableCharacters.SpearMan;
+import Hud.HpBar;
+import fri.shapesge.BlokTextu;
 import fri.shapesge.Manazer;
+import fri.shapesge.StylFontu;
 
 import java.util.List;
 import java.util.Random;
@@ -38,7 +41,7 @@ public class Enemy extends Character {
         int spearmans = 0;
 
         for (Figure figure : allUnitsInBattle) {
-            if (figure.getIsNotEnemy()) {
+            if (figure.getIsAlly()) {
                 continue;
             }
             if (figure instanceof Archer) {
@@ -73,11 +76,25 @@ public class Enemy extends Character {
     }
 
     @Override
+    public void onDeath() {
+        showDefeatMessage();
+    }
+
+    @Override
     protected void updateHpBar(int amount) {
         this.hpBar.substractHp(amount);
     }
 
     public int getX() {
         return POSITION_X;
+    }
+
+
+    private void showDefeatMessage() {
+        BlokTextu text = new BlokTextu("DEFEAT", 500, 500);
+        text.zmenPolohu(500, 500);
+        text.zmenFont("Arial", StylFontu.BOLD, 200);
+        text.zmenFarbu("black");
+        text.zobraz();
     }
 }

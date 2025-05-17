@@ -1,10 +1,8 @@
 package Main;
 
-import Characters.Player;
-import Characters.Enemy;
-import Characters.Figure;
+import Characters.*;
+import Hud.Gold;
 import Level.Background;
-import Characters.Gold;
 import Menu.Menu;
 import fri.shapesge.Manazer;
 
@@ -20,11 +18,32 @@ public class Starter {
         Background bg = new Background();
         Menu menu = new Menu(gold);
 
-        Enemy enemy = new Enemy(Figure.getAllFiguresInBattle());
+        Enemy enemy = new Enemy(Battlefield.getAllFiguresInBattle());
         Player player = new Player();
         Figure.initializeBuildings(player, enemy);
 
-        manazer.spravujObjekt(this);
+        manazer.spravujObjekt(menu);
+        manazer.spravujObjekt(gold);
+        manazer.spravujObjekt(enemy);
+        manazer.spravujObjekt(player);
+        manazer.spravujObjekt(bg);
+    }
+
+    public void nacitajProgres(int goldSpent, int kills, int era) {
+        Manazer manazer = new Manazer();
+
+        Gold gold = new Gold();
+        gold.setGoldSpent(goldSpent);
+        Background bg = new Background();
+        bg.loadBG(era);
+
+        Menu menu = new Menu(gold);
+
+        Enemy enemy = new Enemy(Battlefield.getAllFiguresInBattle());
+        Player player = new Player();
+        Figure.initializeBuildings(player, enemy);
+        Figure.incrementNumberOfDeadEnemies(kills);
+
         manazer.spravujObjekt(menu);
         manazer.spravujObjekt(gold);
         manazer.spravujObjekt(enemy);

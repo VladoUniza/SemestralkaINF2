@@ -1,5 +1,6 @@
-package Characters;
+package Hud;
 
+import Characters.Character;
 import fri.shapesge.Obdlznik;
 
 public class HpBar {

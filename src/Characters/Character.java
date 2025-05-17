@@ -16,7 +16,6 @@ public abstract class Character {
         if (this.health < 0) {
             this.health = 0;
         }
-
         updateHpBar(amount);
     }
 
@@ -34,4 +33,6 @@ public abstract class Character {
     public int getDamage() {
         return damage;
     }
+
+    public void onDeath() {};
 }

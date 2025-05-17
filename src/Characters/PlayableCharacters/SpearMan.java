@@ -1,8 +1,9 @@
 package Characters.PlayableCharacters;
 
+import Characters.Battlefield;
 import Characters.Cards;
 import Characters.Figure;
-import Characters.Gold;
+import Hud.Gold;
 import fri.shapesge.Manazer;
 
 public class SpearMan extends Figure implements Cards {
@@ -29,7 +30,7 @@ public class SpearMan extends Figure implements Cards {
         if (this.gold.getcount() >= this.cost()) {
             SpearMan oto = new SpearMan(200, 900, SPEARMAN_SPEED, this.gold, this.manazer, SPEARMAN_HP);
             this.gold.substractGold(oto.cost());
-            this.gold.goldSpent(oto.cost());
+            this.gold.setGoldSpent(oto.cost());
             this.manazer.spravujObjekt(oto);
         } else {
             this.gold.substractGold(0);
@@ -43,8 +44,8 @@ public class SpearMan extends Figure implements Cards {
 
     @Override
     public void ability() {
-        for (Figure figure : getAllFiguresInBattle()) {
-            if (figure.getIsNotEnemy() && figure instanceof SpearMan && figure.getHpFromHpBar() <= figure.getMaxHP() / 2) {
+        for (Figure figure : Battlefield.getAllFiguresInBattle()) {
+            if (figure.getIsAlly() && figure.getHpFromHpBar() <= figure.getMaxHP() / 2) {
                 figure.setHPOfHpBar(figure.getMaxHP());
             }
         }

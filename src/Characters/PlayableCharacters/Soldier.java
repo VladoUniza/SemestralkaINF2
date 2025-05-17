@@ -1,8 +1,9 @@
 package Characters.PlayableCharacters;
 
+import Characters.Battlefield;
 import Characters.Cards;
 import Characters.Figure;
-import Characters.Gold;
+import Hud.Gold;
 import fri.shapesge.Manazer;
 
 public class Soldier extends Figure implements Cards {
@@ -32,7 +33,7 @@ public class Soldier extends Figure implements Cards {
         if (this.gold.getcount() >= this.cost()) {
             Soldier vojak = new Soldier(200, 900, SOLDIER_SPEED, this.gold, this.manazer, SOLDIER_HP);
             this.gold.substractGold(vojak.cost());
-            this.gold.goldSpent(vojak.cost());
+            this.gold.setGoldSpent(vojak.cost());
             this.manazer.spravujObjekt(vojak);
         } else {
             this.gold.substractGold(0);
@@ -55,8 +56,8 @@ public class Soldier extends Figure implements Cards {
     @Override
     public void ability() {
         if (!damageDoubled) {
-            for (Figure figure : getAllFiguresInBattle()) {
-                if (figure.getIsNotEnemy() && figure instanceof Soldier && figure.getHpFromHpBar() <= figure.getMaxHP() / 2) {
+            for (Figure figure : Battlefield.getAllFiguresInBattle()) {
+                if (figure.getIsAlly() && figure.getHpFromHpBar() <= figure.getMaxHP() / 2) {
                     damageDoubled = true;
                     break;
                 }
