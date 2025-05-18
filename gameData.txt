@@ -1,4 +1,4 @@
 Meno: Vlado
-GoldSpent: 25
+GoldSpent: 80
 Kills: 10
 Era: STONE_AGE
